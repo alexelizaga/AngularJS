@@ -1,0 +1,12 @@
+// public/src/styles/globals.scss
+@use './variables' as *; // <-- imprescindible
+
+body {
+  background: $body-bg;
+  color: $body-color;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+.card {
+  border-radius: $border-radius;
+}

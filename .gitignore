@@ -1,0 +1,79 @@
+# =======================================
+# 🌱  Proyecto AngularJS + Vite
+# =======================================
+
+# 🔧 Dependencias de Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+package-lock.json
+
+# ⚡️ Build de Vite
+dist/
+.vite/
+vite.config.timestamp*
+*.local
+
+# 🧩 Archivos temporales
+*.log
+*.tmp
+*.temp
+*.swp
+*.swo
+*.DS_Store
+Thumbs.db
+.DS_Store?
+ehthumbs.db
+Icon?
+$RECYCLE.BIN/
+
+# ⚙️ Archivos de entorno (locales)
+.env
+.env.*
+!.env.example
+
+# 🧠 Configuración de IDEs / editores
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.iml
+
+# 🧪 Tests (si los añades en el futuro)
+coverage/
+jest/
+*.spec.js
+*.test.js
+
+# 📦 Archivos de sistema / SO
+*.bak
+*.old
+*.orig
+*.rej
+
+# 🖼️ Archivos generados o de previsualización
+*.map
+*.cache
+*.gz
+*.br
+
+# 🚫 Archivos de Mac / Linux
+.Trashes
+.AppleDouble
+.LSOverride
+.apdisk
+
+# 🧰 Configuración local de desarrollador
+*.local.js
+*.local.json
+*.local.yaml
+
+# 🧾 Archivos de exportación temporales
+*.zip
+*.tar
+*.tar.gz
+
+# ⚠️ Evita incluir datos personales o tokens
+# (si usas .env.local para claves API)
