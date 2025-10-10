@@ -1,7 +1,8 @@
-import { definePage } from '../../ui/definePage.js';
-const ng = angular.module('app');
+import { registerPage } from '../../ui/definePage.js';
 
-definePage(ng, '/react', (vm, { html, state, scope }) => {
+console.log('[react-page] registrado');
+
+registerPage('react-page', (vm, { html, state, scope }) => {
   const [getClicks, setClicks] = state(0,  { reRender: false });
 
   scope.getClicks = getClicks;

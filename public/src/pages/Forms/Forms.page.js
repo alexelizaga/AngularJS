@@ -1,54 +1,40 @@
-import { definePage } from '../../ui/definePage.js';
-const ng = angular.module('app');
+import { registerPage } from '../../ui/definePage.js';
 
-definePage(ng, '/forms', (vm, { html, state, scope }) => {
-  const [getName,  setName]  = state('',  { reRender: false });
-  const [getEmail, setEmail] = state('',  { reRender: false });
-  const [getSent,  setSent]  = state(false);
+console.log('[forms-page] registrado');
 
-  scope.updateName  = (v) => setName(v);
-  scope.updateEmail = (v) => setEmail(v);
-  scope.submit = () => {
+registerPage('forms-page', (vm, { html, state, scope }) => {
+  const [getName, setName] = state('', { reRender: false });
+  const [getEmail, setEmail] = state('', { reRender: false });
+  const [getSent, setSent] = state(false);
+
+  scope.updateName = v => setName(v);
+  scope.updateEmail = v => setEmail(v);
+  scope.send = () => {
     if (!getName() || !getEmail()) { alert('Por favor completa todos los campos.'); return; }
     setSent(true);
-    console.log('📤 Enviado:', { nombre: getName(), email: getEmail() });
+    console.log('📨 Enviado:', { nombre: getName(), email: getEmail() });
   };
 
   return html`
     <div class="card p-4">
       <h1 class="h4 mb-3">Formulario de contacto</h1>
-
-      <form ng-submit="submit()" novalidate autocomplete="off" data-1p-ignore data-lpignore="true">
+      <form ng-submit="send()" novalidate autocomplete="off">
         <div class="mb-3">
           <label class="form-label">Nombre</label>
-          <input type="text"
-                 class="form-control"
-                 name="fullNameField"
-                 ng-model="fullName"
-                 ng-change="updateName(fullName)"
-                 placeholder="Tu nombre"
-                 required>
-          <small class="text-muted">fullName = {{ fullName }}</small>
+          <input type="text" class="form-control" name="fullNameField"
+                 ng-model="fullName" ng-change="updateName(fullName)" placeholder="Tu nombre" required />
+          <small class="text-muted">fullName = {{ ${'getName()'} }}</small>
         </div>
 
         <div class="mb-3">
           <label class="form-label">Email</label>
-          <input type="email"
-                 class="form-control"
-                 name="EmailField"
-                 ng-model="email"
-                 ng-change="updateEmail(email)"
-                 placeholder="tucorreo@ejemplo.com"
-                 required>
-          <small class="text-muted">email = {{ email }}</small>
+          <input type="email" class="form-control" name="emailField"
+                 ng-model="email" ng-change="updateEmail(email)" placeholder="tucorreo@ejemplo.com" required />
+          <small class="text-muted">email = {{ ${'getEmail()'} }}</small>
         </div>
 
-        <button type="submit" class="btn btn-primary w-100">Enviar</button>
+        <button type="submit" class="btn btn-primary">Enviar</button>
       </form>
-
-      <div class="alert alert-success mt-4" ng-if="${getSent()}">
-        <strong>¡Gracias, {{ fullName }}!</strong> Hemos recibido tus datos correctamente.
-      </div>
     </div>
   `;
 });
