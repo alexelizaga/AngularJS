@@ -1,6 +1,9 @@
-// Este archivo no exporta nada; solo importa con efecto secundario
 import './styles/globals.scss';
 import './app/index.js';
-import './components/index.js';
-import './services/index.js';
-import './pages/index.js';
+
+import './components/Card/index.js';
+import './components/Counter/index.js';
+
+import './pages/Home/Home.page.js';
+import './pages/Forms/Forms.page.js';
+import './pages/ReactDemo/ReactDemo.page.js';

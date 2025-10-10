@@ -1,2 +1,2 @@
-import './Card/Card.directive.js';
-import './Counter/Counter.directive.js';
+import './Card/index.js';
+import './Counter/index.js';

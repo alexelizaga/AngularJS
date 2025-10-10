@@ -8,7 +8,7 @@
           <ul class="navbar-nav ms-auto">
             <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
             <li class="nav-item"><a class="nav-link" href="/forms">Forms</a></li>
-            <li class="nav-item"><a class="nav-link" href="/react">React</a></li>
+            <li class="nav-item"><a class="nav-link" href="/react">React Demo</a></li>
           </ul>
         </div>
       </nav>
