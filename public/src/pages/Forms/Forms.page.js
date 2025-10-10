@@ -7,6 +7,9 @@ registerPage('forms-page', (vm, { html, state, scope }) => {
   const [getEmail, setEmail] = state('', { reRender: false });
   const [getSent, setSent] = state(false);
 
+  scope.getSent = getSent;
+  scope.name = getName;
+
   scope.updateName = v => setName(v);
   scope.updateEmail = v => setEmail(v);
   scope.send = () => {
@@ -23,18 +26,20 @@ registerPage('forms-page', (vm, { html, state, scope }) => {
           <label class="form-label">Nombre</label>
           <input type="text" class="form-control" name="fullNameField"
                  ng-model="fullName" ng-change="updateName(fullName)" placeholder="Tu nombre" required />
-          <small class="text-muted">fullName = {{ ${'getName()'} }}</small>
         </div>
 
         <div class="mb-3">
           <label class="form-label">Email</label>
           <input type="email" class="form-control" name="emailField"
                  ng-model="email" ng-change="updateEmail(email)" placeholder="tucorreo@ejemplo.com" required />
-          <small class="text-muted">email = {{ ${'getEmail()'} }}</small>
         </div>
 
         <button type="submit" class="btn btn-primary">Enviar</button>
       </form>
+
+      <div class="alert alert-success mt-4" ng-if="getSent()">
+        <strong>¡Gracias, {{ name() }}!</strong> Hemos recibido tus datos correctamente.
+      </div>
     </div>
   `;
 });
