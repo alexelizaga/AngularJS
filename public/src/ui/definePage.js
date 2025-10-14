@@ -9,26 +9,92 @@ export function tagForPath(path) {
 
 // “hooks” muy simples (persisten por instancia)
 function makeHooks($scope) {
-  let store = [];
-  let cursor = 0;
+  let stateStore = [];
+  let stateCursor = 0;
+  let effectStore = [];
+  let effectCursor = 0;
+  let pendingEffects = [];
 
   function state(initial, opts = {}) {
-    const i = cursor++;
-    if (typeof store[i] === 'undefined') {
-      store[i] = typeof initial === 'function' ? initial() : initial;
+    const i = stateCursor++;
+    if (typeof stateStore[i] === 'undefined') {
+      stateStore[i] = typeof initial === 'function' ? initial() : initial;
     }
-    const get = () => store[i];
+    const get = () => stateStore[i];
     const set = (next) => {
-      store[i] = typeof next === 'function' ? next(store[i]) : next;
+      stateStore[i] = typeof next === 'function' ? next(stateStore[i]) : next;
       if (opts.reRender !== false) $scope.$evalAsync(); // re-render suave
     };
     return [get, set];
   }
 
+  function effect(callback, deps) {
+    const i = effectCursor++;
+    const prev = effectStore[i];
+    const depsArray = Array.isArray(deps) ? deps : null;
+    const shouldRun = !prev
+      || !depsArray
+      || !prev.deps
+      || !areDepsEqual(prev.deps, depsArray);
+
+    if (!shouldRun) {
+      effectStore[i] = prev;
+      return;
+    }
+
+    pendingEffects.push(() => {
+      if (prev && typeof prev.cleanup === 'function') {
+        prev.cleanup();
+      }
+      const cleanup = callback();
+      effectStore[i] = {
+        deps: depsArray ? depsArray.slice() : null,
+        cleanup: typeof cleanup === 'function' ? cleanup : null,
+      };
+    });
+  }
+
+  function flushEffects() {
+    if (!pendingEffects.length) return;
+    const toRun = pendingEffects.slice();
+    pendingEffects = [];
+    $scope.$evalAsync(() => {
+      toRun.forEach((run) => run());
+    });
+  }
+
+  $scope.$on('$destroy', () => {
+    effectStore.forEach((item) => {
+      if (item && typeof item.cleanup === 'function') {
+        item.cleanup();
+      }
+    });
+    pendingEffects = [];
+    effectStore = [];
+    stateStore = [];
+  });
+
   const html = (strings, ...vals) =>
     strings.reduce((s, str, i) => s + str + (vals[i] ?? ''), '');
 
-  return { html, state, resetCursor: () => { cursor = 0; } };
+  return {
+    html,
+    state,
+    effect,
+    flushEffects,
+    resetCursor: () => {
+      stateCursor = 0;
+      effectCursor = 0;
+    }
+  };
+}
+
+function areDepsEqual(a, b) {
+  if (!a || !b || a.length !== b.length) return false;
+  for (let i = 0; i < a.length; i++) {
+    if (!Object.is(a[i], b[i])) return false;
+  }
+  return true;
 }
 
 // ───────────────────────────────────────────────────────────────────────────────
@@ -64,7 +130,12 @@ function ensureStub(ngModule) {
           const render = getRenderer(tag);
           if (!render) return; // aún no registrado (lazy), se reintenta en el próximo digest
 
-          const out = render(scope, { html: hooks.html, state: hooks.state, scope });
+          const out = render(scope, {
+            html: hooks.html,
+            state: hooks.state,
+            effect: hooks.effect,
+            scope,
+          });
           const frag = $compile(out)(scope);
           const nextEl = frag[0];
 
@@ -74,6 +145,8 @@ function ensureStub(ngModule) {
             el[0].replaceWith(nextEl);
           }
           mountedEl = nextEl;
+
+          hooks.flushEffects();
         }
 
         // primer render tras digest (por si llega el registro en un resolve previo)
