@@ -8,3 +8,4 @@ function addRoute(path, loader, tag) {
 addRoute('/',   () => import('../pages/Home/Home.page.js'), 'home-page');
 addRoute('/forms',   () => import('../pages/Forms/Forms.page.js'), 'forms-page');
 addRoute('/react', () => import('../pages/ReactDemo/ReactDemo.page.js'), 'react-page');
+addRoute('/url/:id?', () => import('../pages/Url/Url.page.js'), 'url-page');
