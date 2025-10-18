@@ -1,36 +1,44 @@
 import { registerPage } from "../../ui/definePage";
+import { asset as assetUrl } from "../../services/Asset.helper";
 
 console.log('[eje-02-page] registrado');
 
 registerPage('eje-02-page', (vm, { html, state, scope }) => {
 
-    vm.profe = {
-        nombre: "Juan Carlos Pineda",
-	    bio: "Saludos estudiante, mi nombre es Juan Carlos, encantado de conocerte, soy una apasionado instructor de matemáticas aplicadas cuánticas, más orientado a la física termonuclear. Mi vocación es ser maestro y lograr transmitir mis conocimientos a todos mis estudiantes!.",
-	    edad: 47,
-	    foto: "assets/img/juancarlos.jpg"
-    }
+    scope.asset = assetUrl;
+
+    // vm.profe = {
+    //     nombre: "Juan Carlos Pineda",
+	//     bio: "Saludos estudiante, mi nombre es Juan Carlos, encantado de conocerte, soy una apasionado instructor de matemáticas aplicadas cuánticas, más orientado a la física termonuclear. Mi vocación es ser maestro y lograr transmitir mis conocimientos a todos mis estudiantes!.",
+	//     edad: 47,
+	//     foto: "assets/img/juancarlos.jpg"
+    // }
 
     scope.profesor = {
         nombre: "Juan Carlos Pineda",
 	    bio: "Saludos estudiante, mi nombre es Juan Carlos, encantado de conocerte, soy una apasionado instructor de matemáticas aplicadas cuánticas, más orientado a la física termonuclear. Mi vocación es ser maestro y lograr transmitir mis conocimientos a todos mis estudiantes!.",
 	    edad: 47,
-	    foto: "assets/img/juancarlos.jpg"
+	    foto: "img/juancarlos.jpg"
     }
 
     scope.editando = {}
 
+    scope.mostrarCaja = false;
+
     scope.EditarProfesor = () => {
         // angular.copy(scope.profesor, scope.editando)
-        scope.editando = { ...scope.profesor }
+        scope.editando = { ...scope.profesor };
+        scope.mostrarCaja = true;
     }
 
     scope.GuardarCambios = () => {
-        scope.profesor = { ...scope.editando }
+        scope.profesor = { ...scope.editando };
+        scope.mostrarCaja = false;
     }
 
     scope.CancelarCambios = () => {
-        scope.editando = {}
+        scope.editando = {};
+        scope.mostrarCaja = false;
     }
 
     return html`
@@ -44,7 +52,7 @@ registerPage('eje-02-page', (vm, { html, state, scope }) => {
                 <div class="col-sm-3">
                     <section class="panel">
                         <div class="panel-body" align="center">
-                            <img ng-src="{{ profesor.foto }}" class="img-thumbnail" alt="" width="150px" height="150px">
+                            <img ng-src="{{ asset(profesor.foto) }}" class="img-thumbnail" width="150px" height="150px">
                         </div>
                     </section>
                 </div>
@@ -64,7 +72,7 @@ registerPage('eje-02-page', (vm, { html, state, scope }) => {
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row" ng-show="mostrarCaja">
                 <div class="col-sm-6">
                     <section class="panel">
                         <div class="panel-body">

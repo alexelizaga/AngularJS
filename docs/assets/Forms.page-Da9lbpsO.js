@@ -1,4 +1,4 @@
-import{r as c}from"./index-BaIJh3no.js";console.log("[forms-page] registrado");c("forms-page",(d,{html:m,state:a,scope:e})=>{const[l,o]=a("",{reRender:!1}),[t,s]=a("",{reRender:!1}),[n,i]=a(!1);return e.getSent=n,e.name=l,e.updateName=r=>o(r),e.updateEmail=r=>s(r),e.send=()=>{if(!l()||!t()){alert("Por favor completa todos los campos.");return}i(!0),console.log("📨 Enviado:",{nombre:l(),email:t()})},m`
+import{r as c}from"./index-B-yxVHM3.js";console.log("[forms-page] registrado");c("forms-page",(d,{html:m,state:a,scope:e})=>{const[l,o]=a("",{reRender:!1}),[t,s]=a("",{reRender:!1}),[n,i]=a(!1);return e.getSent=n,e.name=l,e.updateName=r=>o(r),e.updateEmail=r=>s(r),e.send=()=>{if(!l()||!t()){alert("Por favor completa todos los campos.");return}i(!0),console.log("📨 Enviado:",{nombre:l(),email:t()})},m`
     <div class="card p-4">
       <h1 class="h4 mb-3">Formulario de contacto</h1>
       <form ng-submit="send()">
