@@ -20,13 +20,17 @@ registerPage('eje-02-page', (vm, { html, state, scope }) => {
 
     scope.editando = {}
 
+    scope.mostrarCaja = false;
+
     scope.EditarProfesor = () => {
         // angular.copy(scope.profesor, scope.editando)
         scope.editando = { ...scope.profesor }
+        scope.mostrarCaja = true;
     }
 
     scope.GuardarCambios = () => {
         scope.profesor = { ...scope.editando }
+        scope.mostrarCaja = false;
     }
 
     scope.CancelarCambios = () => {
