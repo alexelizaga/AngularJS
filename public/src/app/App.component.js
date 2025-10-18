@@ -10,6 +10,7 @@
             <li class="nav-item"><a class="nav-link" href="/forms">Forms</a></li>
             <li class="nav-item"><a class="nav-link" href="/react">React Like</a></li>
             <li class="nav-item"><a class="nav-link" href="/eje-02">Ejercicio 2</a></li>
+            <li class="nav-item"><a class="nav-link" href="/url/demo">URL Page</a></li>
           </ul>
         </div>
       </nav>
