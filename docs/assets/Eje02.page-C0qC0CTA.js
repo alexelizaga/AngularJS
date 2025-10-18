@@ -1,4 +1,4 @@
-import{r}from"./index-BLQl9IX_.js";console.log("[eje-02-page] registrado");r("eje-02-page",(o,{html:s,state:e,scope:a})=>(o.profe={nombre:"Juan Carlos Pineda",bio:"Saludos estudiante, mi nombre es Juan Carlos, encantado de conocerte, soy una apasionado instructor de matemáticas aplicadas cuánticas, más orientado a la física termonuclear. Mi vocación es ser maestro y lograr transmitir mis conocimientos a todos mis estudiantes!.",edad:47,foto:"assets/img/juancarlos.jpg"},a.profesor={nombre:"Juan Carlos Pineda",bio:"Saludos estudiante, mi nombre es Juan Carlos, encantado de conocerte, soy una apasionado instructor de matemáticas aplicadas cuánticas, más orientado a la física termonuclear. Mi vocación es ser maestro y lograr transmitir mis conocimientos a todos mis estudiantes!.",edad:47,foto:"img/juancarlos.jpg"},a.editando={},a.mostrarCaja=!1,a.EditarProfesor=()=>{a.editando={...a.profesor},a.mostrarCaja=!0},a.GuardarCambios=()=>{a.profesor={...a.editando},a.mostrarCaja=!1},a.CancelarCambios=()=>{a.editando={}},s`
+import{r as t}from"./index-B-yxVHM3.js";function r(o){return console.log("/AngularJS/assets/"+o),"/AngularJS/assets/"+o}(function(){angular.module("app").factory("asset",function(){return r})})();console.log("[eje-02-page] registrado");t("eje-02-page",(o,{html:s,state:e,scope:a})=>(a.asset=r,a.profesor={nombre:"Juan Carlos Pineda",bio:"Saludos estudiante, mi nombre es Juan Carlos, encantado de conocerte, soy una apasionado instructor de matemáticas aplicadas cuánticas, más orientado a la física termonuclear. Mi vocación es ser maestro y lograr transmitir mis conocimientos a todos mis estudiantes!.",edad:47,foto:"img/juancarlos.jpg"},a.editando={},a.mostrarCaja=!1,a.EditarProfesor=()=>{a.editando={...a.profesor},a.mostrarCaja=!0},a.GuardarCambios=()=>{a.profesor={...a.editando},a.mostrarCaja=!1},a.CancelarCambios=()=>{a.editando={},a.mostrarCaja=!1},s`
         <div>
             <h1>Profesor</h1>
             <h4>{{ profesor.nombre }}</h4>
@@ -9,8 +9,7 @@ import{r}from"./index-BLQl9IX_.js";console.log("[eje-02-page] registrado");r("ej
                 <div class="col-sm-3">
                     <section class="panel">
                         <div class="panel-body" align="center">
-                            <img ng-src="{{ profesor.foto }}" class="img-thumbnail" alt="" width="150px" height="150px">
-                            <img ng-src="{{ asset(profesor.foto)" class="img-thumbnail" alt="" width="150px" height="150px" }}">
+                            <img ng-src="{{ asset(profesor.foto) }}" class="img-thumbnail" width="150px" height="150px">
                         </div>
                     </section>
                 </div>
@@ -30,7 +29,7 @@ import{r}from"./index-BLQl9IX_.js";console.log("[eje-02-page] registrado");r("ej
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row" ng-show="mostrarCaja">
                 <div class="col-sm-6">
                     <section class="panel">
                         <div class="panel-body">
