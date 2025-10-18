@@ -11,19 +11,40 @@ registerPage('eje-02-page', (vm, { html, state, scope }) => {
 	    foto: "assets/img/juancarlos.jpg"
     }
 
+    scope.profesor = {
+        nombre: "Juan Carlos Pineda",
+	    bio: "Saludos estudiante, mi nombre es Juan Carlos, encantado de conocerte, soy una apasionado instructor de matemáticas aplicadas cuánticas, más orientado a la física termonuclear. Mi vocación es ser maestro y lograr transmitir mis conocimientos a todos mis estudiantes!.",
+	    edad: 47,
+	    foto: "assets/img/juancarlos.jpg"
+    }
+
+    scope.editando = {}
+
+    scope.EditarProfesor = () => {
+        // angular.copy(scope.profesor, scope.editando)
+        scope.editando = { ...scope.profesor }
+    }
+
+    scope.GuardarCambios = () => {
+        scope.profesor = { ...scope.editando }
+    }
+
+    scope.CancelarCambios = () => {
+        scope.editando = {}
+    }
+
     return html`
         <div>
             <h1>Profesor</h1>
-            <h4>{{ profe.nombre }}</h4>
+            <h4>{{ profesor.nombre }}</h4>
             <hr>
 
             <div class="row">
-                
                 <!-- Div que contiene la imagen del profesor -->
                 <div class="col-sm-3">
                     <section class="panel">
                         <div class="panel-body" align="center">
-                            <img ng-src="{{ profe.foto }}" class="img-circle" alt="" width="150px" height="150px">
+                            <img ng-src="{{ profesor.foto }}" class="img-thumbnail" alt="" width="150px" height="150px">
                         </div>
                     </section>
                 </div>
@@ -32,15 +53,38 @@ registerPage('eje-02-page', (vm, { html, state, scope }) => {
                 <div class="col-sm-9">
                     <section class="panel">
                         <div class="panel-body">
-                            {{ profe.bio }}
+                            {{ profesor.bio }}
                             <br>
                             <br>
-                            <strong>Edad:</strong> {{ profe.edad }} años   
+                            <strong>Edad:</strong> {{ profesor.edad }} años
+                            <br>
+                            <button class="btn btn-primary" ng-click="EditarProfesor()">Editar</button>
                         </div>
                     </section>
                 </div>
+            </div>
 
+            <div class="row">
+                <div class="col-sm-6">
+                    <section class="panel">
+                        <div class="panel-body">
+                            Nombre:
+                            <input type="text" class="form-control" ng-model="editando.nombre" />
+                            <br>
 
+                            Edad:
+                            <input type="text" class="form-control" ng-model="editando.edad" />
+                            <br>
+
+                            Bio:
+                            <textarea class="form-control" rows="5" ng-model="editando.bio"></textarea>
+                            <br>
+
+                            <button class="btn btn-primary" ng-click="GuardarCambios()">Guardar</button>
+                            <button class="btn btn-danger" ng-click="CancelarCambios()">Cancelar</button>
+                        </div>
+                    </section>
+                </div>
             </div>
         </div>
     `
