@@ -1,9 +1,20 @@
-import { defineConfig } from 'vite';
+import { defineConfig, normalizePath } from 'vite';
 import { resolve } from 'path';
+import { viteStaticCopy } from 'vite-plugin-static-copy';
 
 export default defineConfig({
   root: 'public',
   base: '/',
+  plugins: [
+    viteStaticCopy({
+      targets: [
+        {
+          src: normalizePath(resolve(__dirname, 'public/assets')),
+          dest: '.'
+        }
+      ]
+    })
+  ],
   build: {
     outDir: '../dist',
     emptyOutDir: true,
