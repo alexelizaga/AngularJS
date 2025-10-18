@@ -15,7 +15,7 @@ registerPage('eje-02-page', (vm, { html, state, scope }) => {
         nombre: "Juan Carlos Pineda",
 	    bio: "Saludos estudiante, mi nombre es Juan Carlos, encantado de conocerte, soy una apasionado instructor de matemáticas aplicadas cuánticas, más orientado a la física termonuclear. Mi vocación es ser maestro y lograr transmitir mis conocimientos a todos mis estudiantes!.",
 	    edad: 47,
-	    foto: "assets/img/juancarlos.jpg"
+	    foto: "img/juancarlos.jpg"
     }
 
     scope.editando = {}
@@ -49,6 +49,7 @@ registerPage('eje-02-page', (vm, { html, state, scope }) => {
                     <section class="panel">
                         <div class="panel-body" align="center">
                             <img ng-src="{{ profesor.foto }}" class="img-thumbnail" alt="" width="150px" height="150px">
+                            <img ng-src="{{ asset(profesor.foto)" class="img-thumbnail" alt="" width="150px" height="150px" }}">
                         </div>
                     </section>
                 </div>

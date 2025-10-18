@@ -1,4 +1,4 @@
-import{r as e}from"./index-BaIJh3no.js";console.log("[eje-02-page] registrado");e("eje-02-page",(o,{html:s,state:r,scope:a})=>(o.profe={nombre:"Juan Carlos Pineda",bio:"Saludos estudiante, mi nombre es Juan Carlos, encantado de conocerte, soy una apasionado instructor de matemáticas aplicadas cuánticas, más orientado a la física termonuclear. Mi vocación es ser maestro y lograr transmitir mis conocimientos a todos mis estudiantes!.",edad:47,foto:"assets/img/juancarlos.jpg"},a.profesor={nombre:"Juan Carlos Pineda",bio:"Saludos estudiante, mi nombre es Juan Carlos, encantado de conocerte, soy una apasionado instructor de matemáticas aplicadas cuánticas, más orientado a la física termonuclear. Mi vocación es ser maestro y lograr transmitir mis conocimientos a todos mis estudiantes!.",edad:47,foto:"assets/img/juancarlos.jpg"},a.editando={},a.EditarProfesor=()=>{a.editando={...a.profesor}},a.GuardarCambios=()=>{a.profesor={...a.editando}},a.CancelarCambios=()=>{a.editando={}},s`
+import{r}from"./index-BLQl9IX_.js";console.log("[eje-02-page] registrado");r("eje-02-page",(o,{html:s,state:e,scope:a})=>(o.profe={nombre:"Juan Carlos Pineda",bio:"Saludos estudiante, mi nombre es Juan Carlos, encantado de conocerte, soy una apasionado instructor de matemáticas aplicadas cuánticas, más orientado a la física termonuclear. Mi vocación es ser maestro y lograr transmitir mis conocimientos a todos mis estudiantes!.",edad:47,foto:"assets/img/juancarlos.jpg"},a.profesor={nombre:"Juan Carlos Pineda",bio:"Saludos estudiante, mi nombre es Juan Carlos, encantado de conocerte, soy una apasionado instructor de matemáticas aplicadas cuánticas, más orientado a la física termonuclear. Mi vocación es ser maestro y lograr transmitir mis conocimientos a todos mis estudiantes!.",edad:47,foto:"img/juancarlos.jpg"},a.editando={},a.mostrarCaja=!1,a.EditarProfesor=()=>{a.editando={...a.profesor},a.mostrarCaja=!0},a.GuardarCambios=()=>{a.profesor={...a.editando},a.mostrarCaja=!1},a.CancelarCambios=()=>{a.editando={}},s`
         <div>
             <h1>Profesor</h1>
             <h4>{{ profesor.nombre }}</h4>
@@ -10,6 +10,7 @@ import{r as e}from"./index-BaIJh3no.js";console.log("[eje-02-page] registrado");
                     <section class="panel">
                         <div class="panel-body" align="center">
                             <img ng-src="{{ profesor.foto }}" class="img-thumbnail" alt="" width="150px" height="150px">
+                            <img ng-src="{{ asset(profesor.foto)" class="img-thumbnail" alt="" width="150px" height="150px" }}">
                         </div>
                     </section>
                 </div>

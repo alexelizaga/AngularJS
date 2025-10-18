@@ -1,4 +1,4 @@
-import{r as l}from"./index-BaIJh3no.js";console.log("[react-page] registrado");l("react-page",(d,{html:s,state:a,scope:e,effect:r})=>{const[n,c]=a(0,{reRender:!1});return e.getClicks=n,e.increment=()=>c(t=>t+1),e.reset=()=>c(0),r(()=>{const t=e.$watch(n,(i,o)=>{i!==o&&console.log("[react-page] clicks changed →",i)});return()=>{t()}},[]),s`
+import{r as l}from"./index-BLQl9IX_.js";console.log("[react-page] registrado");l("react-page",(d,{html:s,state:a,scope:e,effect:r})=>{const[n,c]=a(0,{reRender:!1});return e.getClicks=n,e.increment=()=>c(t=>t+1),e.reset=()=>c(0),r(()=>{const t=e.$watch(n,(i,o)=>{i!==o&&console.log("[react-page] clicks changed →",i)});return()=>{t()}},[]),s`
     <div class="py-4">
       <h2 class="h4 mb-3">Demo React-like ⚛️</h2>
       <p class="text-muted">
