@@ -21,11 +21,18 @@ registerPage('forms-page', (vm, { html, state, scope }) => {
   return html`
     <div class="card p-4">
       <h1 class="h4 mb-3">Formulario de contacto</h1>
-      <form ng-submit="send()" novalidate autocomplete="off">
+      <form ng-submit="send()">
         <div class="mb-3">
           <label class="form-label">Nombre</label>
-          <input type="text" class="form-control" name="fullNameField"
-                 ng-model="fullName" ng-change="updateName(fullName)" placeholder="Tu nombre" required />
+          <input
+            type="text"
+            class="form-control"
+            name="fullNameField"
+            ng-model="fullName"
+            ng-change="updateName(fullName)"
+            placeholder="Tu nombre"
+            required
+          />
         </div>
 
         <div class="mb-3">
@@ -38,7 +45,7 @@ registerPage('forms-page', (vm, { html, state, scope }) => {
       </form>
 
       <div class="alert alert-success mt-4" ng-if="getSent()">
-        <strong>¡Gracias, {{ name() }}!</strong> Hemos recibido tus datos correctamente.
+        <strong>¡Gracias, {{ name() | uppercase }}!</strong> Hemos recibido tus datos correctamente.
       </div>
     </div>
   `;
