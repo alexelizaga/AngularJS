@@ -1,24 +1,11 @@
 import { defineConfig } from 'vite';
 import { resolve } from 'path';
 
-// export default defineConfig({
-//   root: 'public',
-//   base: '/',
-//   build: {
-//     outDir: '../dist',
-//     emptyOutDir: true,
-//     rollupOptions: {
-//       input: resolve(__dirname, 'public/index.html')
-//     }
-//   },
-//   server: { port: 3000, open: true }
-// });
-
 export default defineConfig({
-  root: 'public',                 // sigues trabajando con /public como raíz
-  base: '/AngularJS/',            // << IMPORTANTE para GitHub Pages
+  root: 'public',
+  base: '/',
   build: {
-    outDir: '../docs',            // Pages servirá /docs
+    outDir: '../dist',
     emptyOutDir: true,
     rollupOptions: {
       input: resolve(__dirname, 'public/index.html')
@@ -26,5 +13,4 @@ export default defineConfig({
   },
   server: { port: 3000, open: true }
 });
-
 
