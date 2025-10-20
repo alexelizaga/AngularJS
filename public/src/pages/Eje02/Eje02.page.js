@@ -72,7 +72,7 @@ registerPage('eje-02-page', (vm, { html, state, scope }) => {
                 </div>
             </div>
 
-            <div class="row" ng-show="mostrarCaja">
+            <div class="row animate__animated animate__fadeIn animate__faster" ng-show="mostrarCaja">
                 <div class="col-sm-6">
                     <section class="panel">
                         <div class="panel-body">
