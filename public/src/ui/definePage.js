@@ -14,6 +14,7 @@ function makeHooks($scope) {
   let effectStore = [];
   let effectCursor = 0;
   let pendingEffects = [];
+  const destroyHandlers = [];
 
   function state(initial, opts = {}) {
     const i = stateCursor++;
@@ -63,7 +64,26 @@ function makeHooks($scope) {
     });
   }
 
+  function onDestroy(handler) {
+    if (typeof handler !== 'function') return () => {};
+    destroyHandlers.push(handler);
+    return () => {
+      const idx = destroyHandlers.indexOf(handler);
+      if (idx >= 0) {
+        destroyHandlers.splice(idx, 1);
+      }
+    };
+  }
+
   $scope.$on('$destroy', () => {
+    while (destroyHandlers.length) {
+      const cb = destroyHandlers.shift();
+      try {
+        cb();
+      } catch (err) {
+        console.error(err);
+      }
+    }
     effectStore.forEach((item) => {
       if (item && typeof item.cleanup === 'function') {
         item.cleanup();
@@ -82,6 +102,7 @@ function makeHooks($scope) {
     state,
     effect,
     flushEffects,
+    onDestroy,
     resetCursor: () => {
       stateCursor = 0;
       effectCursor = 0;
@@ -100,10 +121,29 @@ function areDepsEqual(a, b) {
 // ───────────────────────────────────────────────────────────────────────────────
 // 2) Registro global de páginas (tag -> render)
 const registry = Object.create(null);
-export function registerPage(tag, render) {
-  registry[tag] = render;
+export function registerPage(tag, definition, lifecycle = {}) {
+  let render = null;
+  let config = lifecycle;
+
+  if (typeof definition === 'function') {
+    render = definition;
+  } else if (definition && typeof definition === 'object') {
+    render = definition.render;
+    config = definition;
+  }
+
+  if (typeof render !== 'function') {
+    throw new Error(`registerPage('${tag}') requiere una función de renderizado.`);
+  }
+
+  registry[tag] = {
+    render,
+    onInit: typeof config.onInit === 'function' ? config.onInit : null,
+    onRender: typeof config.onRender === 'function' ? config.onRender : null,
+    onDestroy: typeof config.onDestroy === 'function' ? config.onDestroy : null,
+  };
 }
-function getRenderer(tag) {
+function getEntry(tag) {
   return registry[tag];
 }
 
@@ -124,19 +164,36 @@ function ensureStub(ngModule) {
 
         const hooks = makeHooks(scope);
 
+        const ctx = {
+          html: hooks.html,
+          state: hooks.state,
+          effect: hooks.effect,
+          scope,
+          tag,
+          onDestroy: hooks.onDestroy,
+          getElement: () => mountedEl,
+        };
+
+        let initialized = false;
+        let entry = null;
+
+        function safeCall(cb, label) {
+          if (typeof cb !== 'function') return;
+          try {
+            cb(ctx);
+          } catch (err) {
+            const prefix = label ? `[page:${tag}] ${label}()` : `[page:${tag}] handler`;
+            console.error(prefix, err);
+          }
+        }
+
         function doRender() {
           hooks.resetCursor();
 
-          const render = getRenderer(tag);
-          if (!render) return; // aún no registrado (lazy), se reintenta en el próximo digest
+          entry = getEntry(tag);
+          if (!entry || typeof entry.render !== 'function') return; // aún no registrado (lazy)
 
-          const out = render(scope, {
-            html: hooks.html,
-            state: hooks.state,
-            effect: hooks.effect,
-            scope,
-            injector: $injector,
-          });
+          const out = entry.render(scope, ctx);
           const frag = $compile(out)(scope);
           const nextEl = frag[0];
 
@@ -148,12 +205,29 @@ function ensureStub(ngModule) {
           mountedEl = nextEl;
 
           hooks.flushEffects();
+
+          if (!initialized) {
+            initialized = true;
+            safeCall(entry.onInit, 'onInit');
+          }
+
+          safeCall(entry.onRender, 'onRender');
         }
 
         // primer render tras digest (por si llega el registro en un resolve previo)
         $timeout(doRender, 0);
         // cada digest revisará si ya hay render registrado
-        scope.$watch(() => getRenderer(tag), (r) => { if (r) scope.$evalAsync(doRender); });
+        scope.$watch(() => getEntry(tag)?.render, (r) => { if (r) scope.$evalAsync(doRender); });
+
+        hooks.onDestroy(() => {
+          if (!entry) {
+            entry = getEntry(tag);
+          }
+          if (entry) {
+            safeCall(entry.onDestroy, 'onDestroy');
+          }
+          mountedEl = null;
+        });
       }
     };
   }]);
