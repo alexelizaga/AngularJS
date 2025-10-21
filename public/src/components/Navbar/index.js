@@ -12,8 +12,8 @@ defineComponent(ng, 'uiNavbar', (_props, { html, state, scope }) => {
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
-                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="/">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/url/id">URL Page</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/url/1">URL Page</a></li>
                     <li class="nav-item"><a class="nav-link" href="/react">React Like</a></li>
                     <li class="nav-item"><a class="nav-link" href="/eje-02">Ejercicio 2</a></li>
                     <li class="nav-item"><a class="nav-link" href="/forms">Formularios</a></li>
