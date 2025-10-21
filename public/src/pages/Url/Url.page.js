@@ -2,15 +2,13 @@ import { registerPage } from '../../ui/definePage.js';
 
 console.log('[url-page] registrado');
 
-registerPage('url-page', (vm, { html, state, scope, effect }) => {
+registerPage('url-page', (vm, { html, state, scope, effect, injector }) => {
   const [getId, setId] = state('');
 
   scope.getId = getId;
 
   effect(() => {
-    const injector = angular.element(document.body).injector();
     if (!injector) return;
-
     const $route = injector.get('$route');
 
     return scope.$watch(

@@ -4,15 +4,7 @@ import { asset as assetUrl } from "../../services/Asset.helper";
 console.log('[eje-02-page] registrado');
 
 registerPage('eje-02-page', (vm, { html, state, scope }) => {
-
     scope.asset = assetUrl;
-
-    // vm.profe = {
-    //     nombre: "Juan Carlos Pineda",
-	//     bio: "Saludos estudiante, mi nombre es Juan Carlos, encantado de conocerte, soy una apasionado instructor de matemáticas aplicadas cuánticas, más orientado a la física termonuclear. Mi vocación es ser maestro y lograr transmitir mis conocimientos a todos mis estudiantes!.",
-	//     edad: 47,
-	//     foto: "assets/img/juancarlos.jpg"
-    // }
 
     scope.profesor = {
         nombre: "Juan Carlos Pineda",

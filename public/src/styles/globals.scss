@@ -10,3 +10,17 @@ body {
 .card {
   border-radius: $border-radius;
 }
+
+.avatar {
+  width: 75px;
+  height: 75px;
+}
+
+.img-circle {
+  border-radius: 50%;
+}
+
+.link {
+  cursor: pointer;
+  text-decoration: none;
+}
