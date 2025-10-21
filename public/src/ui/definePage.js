@@ -114,7 +114,7 @@ function ensureStub(ngModule) {
   if (stubDeclared) return;
   stubDeclared = true;
 
-  ngModule.directive('pageHost', ['$compile', '$document', '$timeout', function ($compile, $document, $timeout) {
+  ngModule.directive('pageHost', ['$compile', '$document', '$timeout', '$injector', function ($compile, $document, $timeout, $injector) {
     return {
       restrict: 'E',
       scope: true,
@@ -135,6 +135,7 @@ function ensureStub(ngModule) {
             state: hooks.state,
             effect: hooks.effect,
             scope,
+            injector: $injector,
           });
           const frag = $compile(out)(scope);
           const nextEl = frag[0];
