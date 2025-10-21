@@ -28,7 +28,7 @@ registerPage('url-page', (vm, { html, state, scope, effect, injector }) => {
       </div>
 
       <div class="mt-4">
-        <a href="/url/1" class="btn btn-primary" role="button">1</a>
+        <a href="/url/1" class="btn btn-secondary" role="button">1</a>
         <a href="/url/2" class="btn btn-secondary" role="button">2</a>
         <a href="/url/3" class="btn btn-secondary" role="button">3</a>
         <a href="/url/4" class="btn btn-secondary" role="button">4</a>

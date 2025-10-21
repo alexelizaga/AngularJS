@@ -170,6 +170,7 @@ function ensureStub(ngModule) {
           effect: hooks.effect,
           scope,
           tag,
+          injector: $injector,
           onDestroy: hooks.onDestroy,
           getElement: () => mountedEl,
         };
