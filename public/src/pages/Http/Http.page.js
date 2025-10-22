@@ -12,7 +12,7 @@ registerPage('http-page', (vm, { html, state, scope, effect, injector }) => {
   scope.getLoading = getLoading;
   scope.getError = getError;
 
-  effect(() => {
+  scope.loadUsers = () => {
     if (!injector) return;
     const api = injector.get('ApiService');
 
@@ -27,8 +27,17 @@ registerPage('http-page', (vm, { html, state, scope, effect, injector }) => {
       .catch((_error) => {
         setError('No se pudieron cargar los usuarios.');
         setLoading(false);
-      })
-  }, [])
+      });
+  };
+
+  // effect(() => {
+  //   if (typeof scope.loadUsers === 'function') {
+  //     scope.loadUsers()
+  //   }
+  //   return () => {
+  //     console.log('[http-page] cleanup');
+  //   }
+  // }, []);
 
   return html`
     <div>
@@ -53,5 +62,12 @@ registerPage('http-page', (vm, { html, state, scope, effect, injector }) => {
         </li>
       </ul>
     </div>
-  `
+  `;
+}, {
+  onInit({scope}) {
+    if (typeof scope.loadUsers === 'function') scope.loadUsers()
+  },
+  onDestroy() {
+    console.log('[http-page] destruido');
+  }
 });
