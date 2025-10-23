@@ -41,11 +41,9 @@ $RECYCLE.BIN/
 *.sublime-workspace
 *.iml
 
-# 🧪 Tests (si los añades en el futuro)
+# 🧪 Tests
 coverage/
 jest/
-*.spec.js
-*.test.js
 
 # 📦 Archivos de sistema / SO
 *.bak
