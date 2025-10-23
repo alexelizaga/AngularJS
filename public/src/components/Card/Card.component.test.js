@@ -2,7 +2,7 @@ jest.mock('../../ui/defineComponent.js', () => ({
   defineComponent: jest.fn(),
 }));
 
-const loadUiCardModule = async () => {
+const loadCardModule = async () => {
   const moduleMock = {};
 
   global.angular = {
@@ -10,7 +10,7 @@ const loadUiCardModule = async () => {
   };
 
   const { defineComponent } = await import('../../ui/defineComponent.js');
-  await import('./index.js');
+  await import('./Card.component.js');
 
   return { moduleMock, defineComponent };
 };
@@ -23,7 +23,7 @@ describe('uiCard component', () => {
   });
 
   it('registra el componente con el tag "uiCard" y props "title", "body"', async () => {
-    const { moduleMock, defineComponent } = await loadUiCardModule();
+    const { moduleMock, defineComponent } = await loadCardModule();
 
     expect(global.angular.module).toHaveBeenCalledWith('app');
     expect(defineComponent).toHaveBeenCalledTimes(1);
@@ -37,7 +37,7 @@ describe('uiCard component', () => {
   });
 
   it('renderiza el título y cuerpo proporcionados', async () => {
-    const { defineComponent } = await loadUiCardModule();
+    const { defineComponent } = await loadCardModule();
     const [, , render] = defineComponent.mock.calls[0];
 
     const html = (strings, ...vals) =>
