@@ -7,8 +7,6 @@ defineComponent(ng, 'uiNavbar', (_props, { html, state, scope, effect }) => {
     scope.links = [
         { url: '/', label: 'Home' },
         { url: '/url/1', label: 'Direcciones' },
-        { url: '/react', label: 'React Like' },
-        { url: '/eje-02', label: 'Ejercicio 2' },
         { url: '/forms', label: 'Formularios' },
         { url: '/lists', label: 'Listados' },
         { url: '/http', label: 'Llamadas' }
@@ -27,7 +25,7 @@ defineComponent(ng, 'uiNavbar', (_props, { html, state, scope, effect }) => {
     }, []);
 
     return html`
-        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <nav class="navbar navbar-expand-lg bg-dark border-bottom border-body" data-bs-theme="dark">
             <div class="container">
                 <a class="navbar-brand" href="#">AngularJS</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
