@@ -1,4 +1,4 @@
-import './Card/index.js';
-import './Counter/index.js';
-import './Navbar/index.js';
+import './Card/Card.component.js';
+import './Counter/Counter.component.js';
+import './Navbar/Navbar.component.js';
 import './Page/index.js';
