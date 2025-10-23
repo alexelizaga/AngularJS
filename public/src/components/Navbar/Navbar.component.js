@@ -22,7 +22,8 @@ defineComponent(ng, 'uiNavbar', (_props, { html, state, scope, effect }) => {
     scope.getActive = (opt) => scope.active[opt];
 
     effect(() => {
-        scope.setActive('/');
+        const { pathname } = window.location;
+        scope.setActive(pathname || '/');
     }, []);
 
     return html`
