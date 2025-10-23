@@ -2,7 +2,29 @@ import { defineComponent } from '../../ui/defineComponent.js';
 const ng = angular.module('app');
 console.log('[ui-navbar] registrado');
 
-defineComponent(ng, 'uiNavbar', (_props, { html, state, scope }) => {
+defineComponent(ng, 'uiNavbar', (_props, { html, state, scope, effect }) => {
+
+    scope.links = [
+        { url: '/', label: 'Home' },
+        { url: '/url/1', label: 'Direcciones' },
+        { url: '/react', label: 'React Like' },
+        { url: '/eje-02', label: 'Ejercicio 2' },
+        { url: '/forms', label: 'Formularios' },
+        { url: '/lists', label: 'Listados' },
+        { url: '/http', label: 'Llamadas' }
+    ]
+
+    scope.setActive = (opt) => {
+        scope.active = {};
+        scope.active[opt] = 'active';
+    }
+
+    scope.getActive = (opt) => scope.active[opt];
+
+    effect(() => {
+        scope.setActive('/');
+    }, []);
+
     return html`
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
             <div class="container">
@@ -12,16 +34,12 @@ defineComponent(ng, 'uiNavbar', (_props, { html, state, scope }) => {
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
-                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/url/1">URL Page</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/react">React Like</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/eje-02">Ejercicio 2</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/forms">Formularios</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/lists">Listados</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/http">Llamadas</a></li>
+                    <li ng-repeat="l in links">
+                        <a class="nav-link" ng-class="getActive(l.url)" href="{{ l.url }}" ng-click="setActive(l.url)">{{ l.label }}</a>
+                    </li>
                 </ul>
                 </div>
             </div>
         </nav>
     `;
-}, ['title', 'body']);
+});
