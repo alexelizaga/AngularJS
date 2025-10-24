@@ -3,91 +3,29 @@ import { img as imgUrl } from "../../services/Asset.helper";
 
 console.log('[list-page] registrado');
 
-registerPage('list-page', (vm, { html, state, scope }) => {
+registerPage('list-page', (vm, { html, state, scope, effect, injector }) => {
+    
     scope.img = imgUrl;
 
-    scope.personas=[
-        {
-            "id": 0,
-            "sexo": "hombre",
-            "nombre": "Kari Carr",
-            "avatar": "kari.jpg",
-            "telefono": "(826) 453-3497",
-            "celular": "(801) 9175-8136"
-        },
-        {
-            "id": 1,
-            "sexo": "mujer",
-            "nombre": "Tameka Gamble",
-            "avatar": "tameka.jpg",
-            "telefono": "(824) 438-2499",
-            "celular": "(801) 8595-8337"
-        },
-        {
-            "id": 2,
-            "sexo": "mujer",
-            "nombre": "Charity Austin",
-            "avatar": "charity.jpg",
-            "telefono": "(817) 512-2258",
-            "celular": "(801) 9375-3830"
-        },
-        {
-            "id": 3,
-            "sexo": "mujer",
-            "nombre": "Slater Hunt",
-            "avatar": "slater.jpg",
-            "telefono": "(842) 413-3023",
-            "celular": "(801) 9555-1729"
-        },
-        {
-            "id": 4,
-            "sexo": "mujer",
-            "nombre": "Chen Hanson",
-            "avatar": "chen.jpg",
-            "telefono": "(966) 520-2696",
-            "celular": "(801) 9324-4423"
-        },
-        {
-            "id": 5,
-            "sexo": "hombre",
-            "nombre": "Obrien Davis",
-            "avatar": "obrien.jpg",
-            "telefono": "(996) 595-3896",
-            "celular": "(801) 8195-2732"
-        },
-        {
-            "id": 6,
-            "sexo": "hombre",
-            "nombre": "Le Haley",
-            "avatar": "le.jpg",
-            "telefono": "(967) 527-3286",
-            "celular": "(801) 8074-5225"
-        },
-        {
-            "id": 7,
-            "sexo": "hombre",
-            "nombre": "Lester Carney",
-            "avatar": "lester.jpg",
-            "telefono": "(994) 465-3542",
-            "celular": "(801) 9044-7522"
-        },
-        {
-            "id": 8,
-            "sexo": "hombre",
-            "nombre": "Rosario Perry",
-            "avatar": "rosario.jpg",
-            "telefono": "(848) 499-2977",
-            "celular": "(801) 8495-0625"
-        },
-        {
-            "id": 9,
-            "sexo": "mujer",
-            "nombre": "Marilyn Huber",
-            "avatar": "marilyn.jpg",
-            "telefono": "(982) 580-3235",
-            "celular": "(801) 8184-2624"
-        }
-    ];
+    scope.position = 5;
+
+    scope.siguiente = () => {
+        if (scope.personas.length > scope.position) scope.position += 5; 
+    }
+
+    scope.anteriores = () => {
+        if (scope.position > 5) scope.position -= 5; 
+    }
+
+    scope.loadPersonas = () => {
+        if (!injector) return;
+        const api = injector.get('PersonasService');
+        scope.personas = api.getPersonas()    
+    };
+
+    effect(() => {
+        scope.loadPersonas();
+    }, []);
 
     return html`
         <div>
@@ -126,18 +64,25 @@ registerPage('list-page', (vm, { html, state, scope }) => {
                                 <th scope="col"><a class="link" ng-click="columna='sexo';reverse = !reverse">Sexo</a></th>
                                 <th scope="col"><a>Teléfono</a></th>
                                 <th scope="col"><a>Móvil</a></th>
+                                <th scope="col"><a>Ver</a></th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="p in personas | filter:busqueda | orderBy:columna:reverse">
+                            <tr ng-repeat="p in personas | filter:busqueda | orderBy:columna:reverse | limitTo:position | limitTo:-5">
                                 <td><img ng-src="{{ img(p.avatar) }}" class="avatar img-circle"></td>
-                                <td>{{ p.nombre }}</td>
+                                <td>{{ p.nombre | fullnameFormat }}</td>
                                 <td>{{ p.sexo }}</td>
                                 <td>{{ p.telefono }}</td>
                                 <td>{{ p.celular }}</td>
+                                <td><a href="/details/{{p.id}}">Ver registro</a></td>
                             </tr>
                         </tbody>
                     </table>
+
+                    <br>
+
+                    <button class="btn btn-primary" ng-click="anteriores()">Anteriores</button>
+                    <button class="btn btn-primary" ng-click="siguiente()">Siguientes</button>
                 </div>
             </div>
         </div>

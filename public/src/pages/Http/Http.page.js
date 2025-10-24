@@ -65,7 +65,7 @@ registerPage('http-page', (vm, { html, state, scope, effect, injector }) => {
   `;
 }, {
   onInit({scope}) {
-    if (typeof scope.loadUsers === 'function') scope.loadUsers()
+    scope.loadUsers()
   },
   onDestroy() {
     console.log('[http-page] destruido');
