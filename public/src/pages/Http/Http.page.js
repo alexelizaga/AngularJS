@@ -12,28 +12,35 @@ registerPage('http-page', (vm, { html, state, scope, effect, injector }) => {
   scope.getLoading = getLoading;
   scope.getError = getError;
 
-  scope.loadUsers = () => {
+  scope.loadUsers = async () => {
     if (!injector) return;
     const api = injector.get('ApiService');
 
     setLoading(true);
     setError('');
 
-    api.getUsers()
-      .then((users) => {
-        setUsers(Array.isArray(users) ? users : []);
-        setLoading(false);
-      })
-      .catch((_error) => {
-        setError('No se pudieron cargar los usuarios.');
-        setLoading(false);
-      });
+    try {
+      const users = await api.getUsers();
+      setUsers(Array.isArray(users) ? users : []);
+    } catch (_error) {
+      setError('No se pudieron cargar los usuarios.');
+    } finally {
+      setLoading(false);
+    }
+
+    // api.getUsers()
+    //   .then((users) => {
+    //     setUsers(Array.isArray(users) ? users : []);
+    //     setLoading(false);
+    //   })
+    //   .catch((_error) => {
+    //     setError('No se pudieron cargar los usuarios.');
+    //     setLoading(false);
+    //   });
   };
 
   // effect(() => {
-  //   if (typeof scope.loadUsers === 'function') {
-  //     scope.loadUsers()
-  //   }
+  //   scope.loadUsers()
   //   return () => {
   //     console.log('[http-page] cleanup');
   //   }
