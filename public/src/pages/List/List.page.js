@@ -4,23 +4,34 @@ import { img as imgUrl } from "../../services/Asset.helper";
 console.log('[list-page] registrado');
 
 registerPage('list-page', (vm, { html, state, scope, effect, injector }) => {
-    
-    scope.img = imgUrl;
+    const [personas, setPersonas] = state([]);
+    const [position, setPosition] = state(5);
 
-    scope.position = 5;
+    scope.img = imgUrl;
+    scope.personas = personas;
+    scope.position = position;
 
     scope.siguiente = () => {
-        if (scope.personas.length > scope.position) scope.position += 5; 
+        if (personas().length > position()) {
+            setPosition(p => p + 5);
+        }
     }
 
     scope.anteriores = () => {
-        if (scope.position > 5) scope.position -= 5; 
+        if (position() > 5) {
+            setPosition(p => p - 5);
+        }
     }
 
-    scope.loadPersonas = () => {
+    scope.loadPersonas = async () => {
         if (!injector) return;
-        const api = injector.get('PersonasService');
-        scope.personas = api.getPersonas()    
+        const api = injector.get('PeopleServices');
+
+        try {
+            setPersonas(await api.getPersonas());
+        } catch (error) {
+            console.error('[list-page] No fue posible cargar las personas', error);
+        }
     };
 
     effect(() => {
@@ -68,7 +79,7 @@ registerPage('list-page', (vm, { html, state, scope, effect, injector }) => {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="p in personas | filter:busqueda | orderBy:columna:reverse | limitTo:position | limitTo:-5">
+                            <tr ng-repeat="p in personas() | filter:busqueda | orderBy:columna:reverse | limitTo:position() | limitTo:-5">
                                 <td><img ng-src="{{ img(p.avatar) }}" class="avatar img-circle"></td>
                                 <td>{{ p.nombre | fullnameFormat }}</td>
                                 <td>{{ p.sexo }}</td>

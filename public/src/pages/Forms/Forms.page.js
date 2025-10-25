@@ -6,26 +6,33 @@ registerPage('forms-page', (_vm, { html, state, scope, effect, injector }) => {
   scope.country = "ESP";
   scope.phoneMask = "+34-999999999"
 
-  const [getSent, setSent] = state(false);
-  const [getForm, setForm] = state({
+  const [paises, setPaises] = state([]);
+  const [form, setForm] = state({
     name: '',
     email: '',
     country: scope.country,
     phone: ''
   }, { reRender: false });
+  const [sent, setSent] = state(false);
 
-  scope.getForm = getForm;
-  scope.getSent = getSent;
+  scope.paises = paises;
+  scope.form = form;
+  scope.sent = sent;
   
   scope.updateForm = (k, v) => setForm({
-    ...getForm(),
+    ...form(),
     [k]: v
   });
 
-  scope.loadPaises = () => {
+  scope.loadPaises = async () => {
     if (!injector) return;
     const api = injector.get('CountriesService');
-    scope.paises = api.getCountries()
+
+    try {
+      setPaises(await api.getCountries());
+    } catch (error) {
+      console.error('[forms-page] No fue posible cargar los países', error);
+    }
   };
 
   scope.saveForm = async () => {
@@ -34,7 +41,7 @@ registerPage('forms-page', (_vm, { html, state, scope, effect, injector }) => {
 
     let data;
     try {
-      data = await api.saveUser(getForm());
+      data = await api.saveUser(form());
     } catch (error) {
       console.log('El guardado del usuario ha fallado')
     } finally {
@@ -44,7 +51,7 @@ registerPage('forms-page', (_vm, { html, state, scope, effect, injector }) => {
   }
 
   scope.send = async () => {
-    if (!getForm().name || !getForm().email || !getForm().country) {
+    if (!form().name || !form().email || !form().country) {
       alert('Por favor completa todos los campos.');
     }
     const data = await scope.saveForm();
@@ -105,7 +112,7 @@ registerPage('forms-page', (_vm, { html, state, scope, effect, injector }) => {
             <select
               class="form-control"
               ng-model="country"
-              ng-options="pais.id as pais.nombre for pais in paises"
+              ng-options="pais.id as pais.nombre for pais in paises()"
               ng-change="updateForm('country', country)"
             >
               <option value="">Seleccione</option>
@@ -118,8 +125,8 @@ registerPage('forms-page', (_vm, { html, state, scope, effect, injector }) => {
           </button>
         </form>
 
-        <div class="alert alert-success mt-4" ng-if="getSent()">
-          <strong>¡Gracias, {{ getForm().name | uppercase }}!</strong> Hemos recibido tus datos correctamente.
+        <div class="alert alert-success mt-4" ng-if="sent()">
+          <strong>¡Gracias, {{ form().name | uppercase }}!</strong> Hemos recibido tus datos correctamente.
         </div>
       </div>
     </div>
