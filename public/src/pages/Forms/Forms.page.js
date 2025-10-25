@@ -112,7 +112,10 @@ registerPage('forms-page', (_vm, { html, state, scope, effect, injector }) => {
             </select>
           </div>
 
-          <button type="submit" class="btn btn-primary">Enviar</button>
+          <button type="submit" class="btn btn-primary">
+            <i class="bi bi-floppy-fill"></i>
+            Guardar
+          </button>
         </form>
 
         <div class="alert alert-success mt-4" ng-if="getSent()">

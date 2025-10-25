@@ -74,15 +74,26 @@ registerPage('list-page', (vm, { html, state, scope, effect, injector }) => {
                                 <td>{{ p.sexo }}</td>
                                 <td>{{ p.telefono }}</td>
                                 <td>{{ p.celular }}</td>
-                                <td><a href="/details/{{p.id}}">Ver registro</a></td>
+                                <td>
+                                    <a href="/details/{{p.id}}" aria-label="Ver registro">
+                                        <i class="bi bi-eye-fill"></i>
+                                        <span class="visually-hidden">Ver registro</span>
+                                    </a>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
 
                     <br>
 
-                    <button class="btn btn-primary" ng-click="anteriores()">Anteriores</button>
-                    <button class="btn btn-primary" ng-click="siguiente()">Siguientes</button>
+                    <button class="btn btn-primary" ng-click="anteriores()">
+                        <i class="bi bi-chevron-left"></i>
+                        Anteriores
+                    </button>
+                    <button class="btn btn-primary" ng-click="siguiente()">
+                        Siguientes
+                        <i class="bi bi-chevron-right"></i>
+                    </button>
                 </div>
             </div>
         </div>
