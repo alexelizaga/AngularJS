@@ -22,18 +22,33 @@ registerPage('forms-page', (_vm, { html, state, scope, effect, injector }) => {
     [k]: v
   });
 
-  scope.send = () => {
-    if (!getForm().name || !getForm().email || !getForm().country) {
-      alert('Por favor completa todos los campos.');
-    }
-    setSent(true);
-    console.log('📨 Enviado:', getForm())
-  };
-
   scope.loadPaises = () => {
     if (!injector) return;
     const api = injector.get('CountriesService');
     scope.paises = api.getCountries()
+  };
+
+  scope.saveForm = async () => {
+    if (!injector) return;
+    const api = injector.get('ApiService');
+
+    let data;
+    try {
+      data = await api.saveUser(getForm());
+    } catch (error) {
+      console.log('El guardado del usuario ha fallado')
+    } finally {
+      setSent(true);
+    }
+    return data;
+  }
+
+  scope.send = async () => {
+    if (!getForm().name || !getForm().email || !getForm().country) {
+      alert('Por favor completa todos los campos.');
+    }
+    const data = await scope.saveForm();
+    console.log('📨 Enviado:', data);
   };
 
   effect(() => {
