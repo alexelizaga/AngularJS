@@ -2,16 +2,17 @@ import { registerPage } from '../../ui/definePage.js';
 
 console.log('[forms-page] registrado');
 
-registerPage('forms-page', (_vm, { html, state, scope }) => {
-
+registerPage('forms-page', (_vm, { html, state, scope, effect, injector }) => {
   scope.country = "ESP";
+  scope.phoneMask = "+34-999999999"
 
+  const [getSent, setSent] = state(false);
   const [getForm, setForm] = state({
     name: '',
     email: '',
-    country: scope.country
+    country: scope.country,
+    phone: ''
   }, { reRender: false });
-  const [getSent, setSent] = state(false);
 
   scope.getForm = getForm;
   scope.getSent = getSent;
@@ -29,24 +30,15 @@ registerPage('forms-page', (_vm, { html, state, scope }) => {
     console.log('📨 Enviado:', getForm())
   };
 
-  scope.paises = [
-    { id:"CRI", nombre:"COSTA RICA"},
-    { id:"HRV", nombre:"CROACIA"},
-    { id:"CUB", nombre:"CUBA"},
-    { id:"DNK", nombre:"DINAMARCA"},
-    { id:"DMA", nombre:"DOMINICA"},
-    { id:"DOM", nombre:"REPÚBLICA DOMINICANA"},
-    { id:"ECU", nombre:"ECUADOR"},
-    { id:"EGY", nombre:"EGIPTO"},
-    { id:"SLV", nombre:"EL SALVADOR"},
-    { id:"ARE", nombre:"EMIRATOS ÁRABES UNIDOS"},
-    { id:"ERI", nombre:"ERITREA"},
-    { id:"SVK", nombre:"ESLOVAQUIA"},
-    { id:"SVN", nombre:"ESLOVENIA"},
-    { id:"ESP", nombre:"ESPAÑA"},
-    { id:"USA", nombre:"ESTADOS UNIDOS"},
-    { id:"EST", nombre:"ESTONIA"}
-  ];
+  scope.loadPaises = () => {
+    if (!injector) return;
+    const api = injector.get('CountriesService');
+    scope.paises = api.getCountries()
+  };
+
+  effect(() => {
+    scope.loadPaises();
+  }, []);
 
   return html`
     <div>
@@ -79,6 +71,17 @@ registerPage('forms-page', (_vm, { html, state, scope }) => {
               ng-change="updateForm('email', email)"
               placeholder="tucorreo@ejemplo.com"
               required
+            />
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Teléfono:</label>
+            <input
+              type="text"
+              class="form-control"
+              ng-model="phone"
+              ng-change="updateForm('phone', phone)"
+              ui-mask="{{ phoneMask }}"
             />
           </div>
 
