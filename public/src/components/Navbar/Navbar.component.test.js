@@ -22,7 +22,7 @@ describe('uiNavbar component', () => {
     jest.clearAllMocks();
   });
 
-  it('registra el componente con el tag "uiNavbar" y dependencias ["title", "body"]', async () => {
+  it('registra el componente con el tag "uiNavbar" sin dependencias adicionales', async () => {
     const { moduleMock, defineComponent } = await loadNavbarModule();
 
     expect(global.angular.module).toHaveBeenCalledWith('app');
@@ -33,7 +33,7 @@ describe('uiNavbar component', () => {
     expect(ngModule).toBe(moduleMock);
     expect(tagName).toBe('uiNavbar');
     expect(render).toEqual(expect.any(Function));
-    expect(propNames).toEqual(['title', 'body']);
+    expect(propNames).toBeUndefined();
   });
 
   it('renderiza la estructura del navbar con todos los enlaces esperados', async () => {
@@ -43,23 +43,32 @@ describe('uiNavbar component', () => {
     const html = (strings, ...vals) =>
       strings.reduce((acc, str, index) => acc + str + (vals[index] ?? ''), '');
 
-    const output = render({}, { html });
-
-    expect(output).toContain('class="navbar navbar-expand-lg bg-body-tertiary"');
-    expect(output).toContain('<a class="navbar-brand" href="#">AngularJS</a>');
-
-    const links = [
-      ['/', 'Home'],
-      ['/url/1', 'URL Page'],
-      ['/react', 'React Like'],
-      ['/eje-02', 'Ejercicio 2'],
-      ['/forms', 'Formularios'],
-      ['/lists', 'Listados'],
-      ['/http', 'Llamadas'],
-    ];
-
-    links.forEach(([href, label]) => {
-      expect(output).toContain(`<a class="nav-link" href="${href}">${label}</a>`);
+    const scope = {};
+    const effect = jest.fn((cb) => {
+      cb();
     });
+
+    const originalWindow = global.window;
+    global.window = { location: { pathname: '/forms' } };
+
+    const output = render({}, { html, scope, effect, state: jest.fn() });
+
+    global.window = originalWindow;
+
+    expect(scope.links).toEqual([
+      { url: '/', label: 'Home' },
+      { url: '/url/1', label: 'Direcciones' },
+      { url: '/forms', label: 'Formularios' },
+      { url: '/lists', label: 'Listados' },
+      { url: '/http', label: 'Llamadas' },
+    ]);
+
+    expect(scope.active['/forms']).toBe('active');
+
+    expect(effect).toHaveBeenCalledWith(expect.any(Function), []);
+
+    expect(output).toContain('class="navbar navbar-expand-lg bg-dark border-bottom border-body sticky-top"');
+    expect(output).toContain('<a class="navbar-brand" href="#">AngularJS</a>');
+    expect(output).toContain('ng-repeat="l in links"');
   });
 });
