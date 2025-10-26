@@ -1,19 +1,7 @@
-jest.mock('../../ui/defineComponent.js', () => ({
-  defineComponent: jest.fn(),
-}));
+import { loadComponentModule } from '../../test-utils/loadComponentModule.js';
 
-const loadCardModule = async () => {
-  const moduleMock = {};
-
-  global.angular = {
-    module: jest.fn(() => moduleMock),
-  };
-
-  const { defineComponent } = await import('../../ui/defineComponent.js');
-  await import('./Card.component.js');
-
-  return { moduleMock, defineComponent };
-};
+const loadCardModule = () =>
+  loadComponentModule(() => import('./Card.component.js'));
 
 describe('uiCard component', () => {
   afterEach(() => {
