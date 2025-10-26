@@ -1,3 +1,7 @@
+jest.mock('../ui/defineComponent.js', () => ({
+  defineComponent: jest.fn(),
+}));
+
 export const loadComponentModule = async (importComponent) => {
   const moduleMock = {};
 

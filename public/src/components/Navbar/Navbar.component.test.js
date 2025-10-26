@@ -1,9 +1,5 @@
 import { loadComponentModule } from '../../test-utils/loadComponentModule.js';
 
-jest.mock('../../ui/defineComponent.js', () => ({
-  defineComponent: jest.fn(),
-}));
-
 const loadNavbarModule = () =>
   loadComponentModule(() => import('./Navbar.component.js'));
 
