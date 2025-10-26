@@ -4,48 +4,44 @@ import { img as imgUrl } from "../../services/Asset.helper";
 console.log('[details-page] registrado');
 
 registerPage('details-page', (vm, { html, state, scope, effect, injector }) => {
-    const [id, setId] = state('');
+    const [id, _setId] = state(injector.get('$routeParams')?.id);
+    const [persona, setPersona] = state(undefined, { reRender: false });
 
     scope.img = imgUrl;
     scope.id = id;
+    scope.persona = persona;
 
-    scope.getId = () => {
+    scope.getPersona = async () => {
         if (!injector) return;
-        // const $route = injector.get('$route');
-        // setId($route.current?.params?.id ?? '');
-        const $routeParams = injector.get('$routeParams');
-        setId($routeParams?.id ?? '');
-    };
+        const api = injector.get('PeopleServices');
 
-    scope.getPersona = () => {
-        if (!injector) return;
-        const api = injector.get('PersonasService');
-        scope.persona = api.getPersona(id());
-        if(!scope.persona) window.location = '/lists';
+        try {
+            const persona = await api.getPersona(id());
+            setPersona(persona);
+        } catch (error) {
+            console.error('[detail-page] No fue posible cargar la persona', error);
+        }
+
+        if(!persona()) window.location = '/lists';
     };
 
     effect(() => {
-        scope.getId();
-    }, []);
-
-    effect(() => {
-        if(!id()) return;
         scope.getPersona();
-    }, [id()]);
+    }, []);
 
     return html`
         <div>
             <ui-page-header
-                title="{{ persona.nombre }}" 
+                title="{{ persona().nombre }}" 
                 subtitle="Persona"
             ></ui-page-header>
 
             <div style="display:flex; width:100%" ng-if="!!persona">
-                <img ng-src="{{ img(persona.avatar) }}" class="avatar img-circle">
+                <img ng-src="{{ img(persona().avatar) }}" class="avatar img-circle">
                 <ul>
-                    <li><b>Sexo:</b> {{ persona.sexo }}</li>
-                    <li><b>Teléfono:</b> {{ persona.telefono }}</li>
-                    <li><b>Móvil:</b> {{ persona.celular }}</li>
+                    <li><b>Sexo:</b> {{ persona().sexo }}</li>
+                    <li><b>Teléfono:</b> {{ persona().telefono }}</li>
+                    <li><b>Móvil:</b> {{ persona().celular }}</li>
                 </ul>
             </div>
 
