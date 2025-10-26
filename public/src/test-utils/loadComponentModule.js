@@ -4,10 +4,14 @@ jest.mock('../ui/defineComponent.js', () => ({
 
 export const loadComponentModule = async (importComponent) => {
   const moduleMock = {};
+
   global.angular = {
     module: jest.fn(() => moduleMock),
   };
+
   const { defineComponent } = await import('../ui/defineComponent.js');
+
   await importComponent();
+
   return { moduleMock, defineComponent };
 };
