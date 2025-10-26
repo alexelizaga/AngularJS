@@ -1,19 +1,6 @@
-jest.mock('../../ui/defineComponent.js', () => ({
-  defineComponent: jest.fn(),
-}));
+import { loadComponentModule } from '../../test-utils/loadComponentModule.js';
 
-const loadNavbarModule = async () => {
-  const moduleMock = {};
-
-  global.angular = {
-    module: jest.fn(() => moduleMock),
-  };
-
-  const { defineComponent } = await import('../../ui/defineComponent.js');
-  await import('./Navbar.component.js');
-
-  return { moduleMock, defineComponent };
-};
+const loadNavbarModule = () => loadComponentModule(() => import('./Navbar.component.js'));
 
 describe('uiNavbar component', () => {
   afterEach(() => {
