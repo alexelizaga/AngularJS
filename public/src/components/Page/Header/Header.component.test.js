@@ -1,19 +1,11 @@
+import { loadComponentModule } from '../../../test-utils/loadComponentModule.js';
+
 jest.mock('../../../ui/defineComponent.js', () => ({
   defineComponent: jest.fn(),
 }));
 
-const loadHeaderModule = async () => {
-  const moduleMock = {};
-
-  global.angular = {
-    module: jest.fn(() => moduleMock),
-  };
-
-  const { defineComponent } = await import('../../../ui/defineComponent.js');
-  await import('./Header.component.js');
-
-  return { moduleMock, defineComponent };
-};
+const loadHeaderModule = () =>
+  loadComponentModule(() => import('./Header.component.js'));
 
 describe('uiPageHeader component', () => {
   afterEach(() => {
