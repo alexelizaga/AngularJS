@@ -1,19 +1,11 @@
+import { loadComponentModule } from '../../test-utils/loadComponentModule.js';
+
 jest.mock('../../ui/defineComponent.js', () => ({
   defineComponent: jest.fn(),
 }));
 
-const loadCounterModule = async () => {
-  const moduleMock = {};
-
-  global.angular = {
-    module: jest.fn(() => moduleMock),
-  };
-
-  const { defineComponent } = await import('../../ui/defineComponent.js');
-  await import('./Counter.component.js');
-
-  return { moduleMock, defineComponent };
-};
+const loadCounterModule = () =>
+  loadComponentModule(() => import('./Counter.component.js'));
 
 describe('uiCounter component', () => {
   afterEach(() => {
