@@ -1,7 +1,6 @@
 import { loadComponentModule } from '../../test-utils/loadComponentModule.js';
 
-const loadCounterModule = () =>
-  loadComponentModule(() => import('./Counter.component.js'));
+const loadCounterModule = () => loadComponentModule(() => import('./Counter.component.js'));
 
 describe('uiCounter component', () => {
   afterEach(() => {

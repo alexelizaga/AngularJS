@@ -1,7 +1,6 @@
 import { loadComponentModule } from '../../test-utils/loadComponentModule.js';
 
-const loadCardModule = () =>
-  loadComponentModule(() => import('./Card.component.js'));
+const loadCardModule = () => loadComponentModule(() => import('./Card.component.js'));
 
 describe('uiCard component', () => {
   afterEach(() => {

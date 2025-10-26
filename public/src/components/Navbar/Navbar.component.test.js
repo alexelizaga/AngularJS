@@ -1,7 +1,6 @@
 import { loadComponentModule } from '../../test-utils/loadComponentModule.js';
 
-const loadNavbarModule = () =>
-  loadComponentModule(() => import('./Navbar.component.js'));
+const loadNavbarModule = () => loadComponentModule(() => import('./Navbar.component.js'));
 
 describe('uiNavbar component', () => {
   afterEach(() => {
