@@ -1,20 +1,4 @@
-const loadFilter = async () => {
-  const filters = {};
-  const moduleMock = {
-    filter: jest.fn((name, factory) => {
-      filters[name] = factory();
-      return moduleMock;
-    }),
-  };
-
-  global.angular = {
-    module: jest.fn(() => moduleMock),
-  };
-
-  await import('./fullnameFormat.filter.js');
-
-  return { moduleMock, filters };
-};
+import { loadFilter } from '../test-utils/loadFilter.js';
 
 describe('fullnameFormat filter', () => {
   afterEach(() => {
@@ -24,7 +8,9 @@ describe('fullnameFormat filter', () => {
   });
 
   it('registra el filtro fullnameFormat en el módulo app', async () => {
-    const { moduleMock, filters } = await loadFilter();
+    const { moduleMock, filters } = await loadFilter(() =>
+      import('./fullnameFormat.filter.js')
+    );
 
     expect(global.angular.module).toHaveBeenCalledWith('app');
     expect(moduleMock.filter).toHaveBeenCalledWith(
@@ -35,7 +21,9 @@ describe('fullnameFormat filter', () => {
   });
 
   it('devuelve la entrada original cuando no es una cadena', async () => {
-    const { filters } = await loadFilter();
+    const { filters } = await loadFilter(() =>
+      import('./fullnameFormat.filter.js')
+    );
     const filter = filters.fullnameFormat;
 
     const values = [null, undefined, 42, { name: 'John' }, ['John']];
@@ -46,7 +34,9 @@ describe('fullnameFormat filter', () => {
   });
 
   it('normaliza espacios y coloca el apellido antes del nombre', async () => {
-    const { filters } = await loadFilter();
+    const { filters } = await loadFilter(() =>
+      import('./fullnameFormat.filter.js')
+    );
     const filter = filters.fullnameFormat;
 
     expect(filter('  John   Doe  ')).toBe('Doe, John');
@@ -56,7 +46,9 @@ describe('fullnameFormat filter', () => {
   });
 
   it('mantiene el valor cuando no hay apellido o la cadena queda vacía', async () => {
-    const { filters } = await loadFilter();
+    const { filters } = await loadFilter(() =>
+      import('./fullnameFormat.filter.js')
+    );
     const filter = filters.fullnameFormat;
 
     expect(filter('  ')).toBe('');
